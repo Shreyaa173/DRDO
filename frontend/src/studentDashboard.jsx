@@ -170,6 +170,7 @@ const StudentSidebar = ({ currentUser, onLogout }) => {
             return (
               <li key={item.id}>
                 <button
+                  data-testid={`nav-${item.id}`}
                   onClick={() => navigate(item.path)}
                   className={`flex items-center space-x-3 w-full p-3 rounded-lg transition-colors ${
                     isActive(item.path)
@@ -199,6 +200,7 @@ const StudentSidebar = ({ currentUser, onLogout }) => {
         </div>
         <button
           onClick={onLogout}
+          data-testid="logout-icon"
           className="flex items-center space-x-3 w-full p-3 rounded-lg text-blue-200 hover:bg-blue-700 hover:text-white transition-colors"
         >
           <LogOut size={20} />
@@ -242,11 +244,23 @@ const StudentDashboardOverview = ({ applications, currentUser }) => {
     return acc;
   }, []);
 
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/login";
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Student Dashboard</h1>
+        <h1 data-testid="student-dashboard-title" className="text-3xl font-bold text-gray-900">Student Dashboard</h1>
+        {/* <button
+          onClick={handleLogout}
+          data-testid="logout-icon"
+          className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+        >
+          Logout
+        </button> */}
         <p className="text-gray-600 mt-2">
           Welcome back, {currentUser?.name || "Student"}
         </p>

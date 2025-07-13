@@ -89,6 +89,7 @@ const AdminSidebar = ({ currentUser, onLogout }) => {
         </div>
         <button
           onClick={onLogout}
+          data-testid="logout-icon"
           className="flex items-center space-x-3 w-full p-3 rounded-lg text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors"
         >
           <LogOut size={20} />
@@ -116,12 +117,28 @@ const AdminDashboardOverview = ({ applications }) => {
   ];
 
   const totalApplications = chartData.reduce((sum, item) => sum + item.value, 0);
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/login";
+  };
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+        <h1 data-testid="admin-dashboard-title" className="text-3xl font-bold text-gray-900">
+          Admin Dashboard
+        </h1>
+
+        {/* Logout Button */}
+        {/* <button
+          onClick={handleLogout}
+          data-testid="logout-button"
+          className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+        >
+          Logout
+        </button> */}
+
         <p className="text-gray-600 mt-2">Welcome back, Admin</p>
       </div>
 
@@ -404,13 +421,14 @@ const ApplicationsManagement = ({ applications, setApplications }) => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{app.position}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {app.resume ? (
-                        <button
-                          onClick={() => window.open(`${baseURL}/applications/resume/${app.resume}`, '_blank')}
+                        <a
+                          href={`${baseURL}/applications/resume/${app.resume}`}
+                          download  // ✅ Forces browser to download instead of open
                           className="text-blue-600 hover:text-blue-900 underline flex items-center gap-1"
                         >
                           <FileText size={16} />
-                          View Resume
-                        </button>
+                          Download Resume
+                        </a>
                       ) : (
                         <span className="text-gray-400">No resume</span>
                       )}

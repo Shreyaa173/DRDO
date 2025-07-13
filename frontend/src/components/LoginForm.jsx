@@ -53,6 +53,8 @@ const LoginForm = ({ setCurrentUser }) => {
         <div className="mb-4">
           <label className="block text-gray-600 mb-1">Email</label>
           <input
+            name="email" 
+            data-testid="login-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -65,6 +67,8 @@ const LoginForm = ({ setCurrentUser }) => {
           <label className="block text-gray-600 mb-1">Password</label>
           <div className="relative">
             <input
+              name="password"
+              data-testid="login-password"
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -119,6 +123,7 @@ const LoginForm = ({ setCurrentUser }) => {
 
         <button
           type="submit"
+          data-testid="login-button"
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
           Login

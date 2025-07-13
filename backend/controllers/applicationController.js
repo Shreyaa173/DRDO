@@ -173,9 +173,7 @@ exports.getResume = async (req, res) => {
       return res.status(404).json({ error: 'Resume file not found' });
     }
 
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline');
-    res.sendFile(filePath);
+    return res.download(filePath, filename);
   } catch (error) {
     console.error('Error serving resume:', error);
     res.status(500).json({ error: 'Failed to serve resume file' });

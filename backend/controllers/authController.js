@@ -118,7 +118,7 @@ exports.login = async (req, res) => {
     };
 
     // Return token + user
-    res.json({ token, user: userData });
+    res.json({ valid: true, token: token, user: userData });
 
   } catch (err) {
     console.error("❌ Login Error:", err);
