@@ -17,7 +17,7 @@ def test_student_signup():
         driver.get(f"{BASE_URL}/signup")
         time.sleep(1)
 
-        print("Filling form...")
+        print(" Filling form...")
         driver.find_element(By.CSS_SELECTOR, "input[placeholder='Full Name']").send_keys("Student Tester")
         email = generate_unique_email()
         driver.find_element(By.CSS_SELECTOR, "input[type='email']").send_keys(email)
