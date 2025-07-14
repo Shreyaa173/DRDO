@@ -23,7 +23,6 @@ def setup_driver():
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-web-security")
     chrome_options.add_argument("--allow-running-insecure-content")
-    chrome_options.add_experimental_option("detach", True)
     
     try:
         driver = webdriver.Chrome(options=chrome_options)
@@ -178,14 +177,23 @@ def get_current_status(row):
         for selector in status_selectors:
             try:
                 status_element = row.find_element(By.CSS_SELECTOR, selector)
-                status_text = status_element.text.strip()
-                
-                # Check if this looks like a status
-                if status_text and any(keyword in status_text.lower() for keyword in 
-                                     ['pending', 'approved', 'rejected', 'hold', 'on hold']):
-                    return status_text
+                status_text = status_element.text.strip().lower()
+
+                status_map = {
+                    'pending': 'Pending',
+                    'approved': 'Approved',
+                    'rejected': 'Rejected',
+                    'hold': 'On Hold',
+                    'on hold': 'On Hold'
+                }
+
+                for key in status_map:
+                    if key in status_text:
+                        return status_map[key]
+                    
             except:
-                continue
+                pass        
+
         
         # Try to find status by examining all text in the row
         try:
@@ -194,8 +202,8 @@ def get_current_status(row):
                 'pending': 'Pending',
                 'approved': 'Approved', 
                 'rejected': 'Rejected',
-                'on hold': 'On Hold',
-                'hold': 'On Hold'
+                'hold': 'On Hold',
+                'on hold': 'On Hold'
             }
             
             for keyword, status in status_keywords.items():
@@ -688,11 +696,7 @@ def test_status_update_comprehensive():
     except Exception as e:
         print(f"✗ Comprehensive test failed: {e}")
     finally:
-        try:
-            input("Press Enter to close the browser...")
-            driver.quit()
-        except:
-            pass
+        driver.quit()
 
 if __name__ == "__main__":
     test_status_update_comprehensive()

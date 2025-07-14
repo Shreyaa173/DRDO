@@ -18,7 +18,6 @@ def setup_driver():
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-web-security")
     chrome_options.add_argument("--allow-running-insecure-content")
-    chrome_options.add_experimental_option("detach", True)  # Optional: keeps browser open after test
 
     try:
         driver = webdriver.Chrome(options=chrome_options)
