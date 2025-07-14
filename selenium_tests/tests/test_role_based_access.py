@@ -15,7 +15,7 @@ class TestRoleBasedAccess:
     @classmethod
     def setup_class(cls):
         chrome_options = Options()
-        chrome_options.add_argument("--headless=new")  # or "--headless" for older Chrome
+        # chrome_options.add_argument("--headless=new")  # or "--headless" for older Chrome
         chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
