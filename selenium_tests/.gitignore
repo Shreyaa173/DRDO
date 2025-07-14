@@ -1,0 +1,16 @@
+venv/
+.pytest_cache
+
+*.log
+*.tmp
+*.out
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.mp4
+*.webp
+screenshots/
+test-results/
+selenium_tests/tests/test_downloads/
