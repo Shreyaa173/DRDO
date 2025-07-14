@@ -1,16 +1,19 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+import os
 import time
 import random
 
-BASE_URL = "http://localhost:5173"  # Change if needed
+BASE_URL = "http://localhost:5173"  # No need to change if running locally
 
 def generate_unique_email():
     return f"student{random.randint(1000, 9999)}@test.com"
 
 def test_student_signup():
-    service = Service(r"C:\Users\sachi\DRDO\DRDO_project\selenium_tests\chromedriver.exe")
+    # ✅ General path: assumes chromedriver.exe is in the same folder as this script
+    CHROMEDRIVER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "chromedriver.exe")
+    service = Service(CHROMEDRIVER_PATH)
     driver = webdriver.Chrome(service=service)
 
     try:

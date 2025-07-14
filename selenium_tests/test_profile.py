@@ -4,11 +4,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import os
 
 BASE_URL = "http://localhost:5173"
-CHROMEDRIVER_PATH = r"C:\Users\sachi\DRDO\DRDO_project\selenium_tests\chromedriver.exe"
 TEST_EMAIL = "student9203@test.com"
 TEST_PASSWORD = "studentpassword123"
+
+# ✅ General chromedriver path (assumes chromedriver is in same folder as script)
+CHROMEDRIVER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "chromedriver.exe")
 
 def test_profile_creation():
     service = Service(CHROMEDRIVER_PATH)
