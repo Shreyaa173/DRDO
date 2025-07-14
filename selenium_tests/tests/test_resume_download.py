@@ -111,3 +111,12 @@ class TestResumeDownload:
         assert os.path.getsize(file_path) > 0, "❌ Downloaded file is empty."
 
         print(f"✅ Resume downloaded successfully: {downloaded_file}")
+
+if __name__ == "__main__":
+    test = TestResumeDownload()
+    test.setup_class()
+    try:
+        test.test_resume_download()
+    finally:
+        test.teardown_class()
+
