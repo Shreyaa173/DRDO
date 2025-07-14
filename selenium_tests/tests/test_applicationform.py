@@ -11,8 +11,8 @@ BASE_URL = "http://localhost:5173"
 TEST_EMAIL = "anshikafb1506@gmail.com"
 TEST_PASSWORD = "12345"
 
-# Portable paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Dynamically resolve paths
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # one level above /tests
 CHROMEDRIVER_PATH = os.path.join(BASE_DIR, "chromedriver.exe")
 RESUME_PATH = os.path.join(BASE_DIR, "resume", "PROJECT FILE.pdf")
 
@@ -24,7 +24,6 @@ def test_application_form():
     try:
         if not os.path.isfile(RESUME_PATH):
             print("Test Failed: Resume file not found at:", RESUME_PATH)
-            driver.quit()
             return
 
         # Step 1: Login
@@ -34,56 +33,39 @@ def test_application_form():
         driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
         wait.until(EC.url_contains("/student"))
         print("Logged in successfully")
-        print("Current URL after login:", driver.current_url)
 
-        # Step 2: Click "Apply Now"
-        print("Waiting for 'Apply Now' menu item...")
-        apply_now_button = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), 'Apply Now')]"))
-        )
-        time.sleep(1)
-        apply_now_button.click()
-        print("Clicked 'Apply Now'")
+        # Step 2: Click 'Apply Now'
+        apply_now = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), 'Apply Now')]")))
+        apply_now.click()
 
-        # Step 3: Wait for form modal
+        # Step 3: Fill form
         wait.until(EC.presence_of_element_located((By.TAG_NAME, "select")))
-        time.sleep(1)
-
-        # Step 4: Fill dropdowns
         selects = driver.find_elements(By.TAG_NAME, "select")
         Select(selects[0]).select_by_visible_text("Solid State Physics Laboratory (SSPL) - Delhi")
         Select(selects[1]).select_by_visible_text("Summer Research Intern")
         Select(selects[2]).select_by_visible_text("Computer Science & AI")
         Select(selects[3]).select_by_visible_text("6-8 weeks (Industrial Training)")
 
-        # Step 5: Enter expected start date
         driver.find_element(By.CSS_SELECTOR, "input[type='date']").send_keys("2025-08-01")
-
-        # Step 6: Cover letter
         driver.find_element(By.TAG_NAME, "textarea").send_keys(
             "I am enthusiastic about contributing to national defence through research at DRDO."
         )
 
-        # Step 7: Upload resume
+        # Step 4: Upload resume
         file_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
         file_input.send_keys(RESUME_PATH)
-        print("Resume uploaded:", RESUME_PATH)
 
-        time.sleep(1)
+        # Step 5: Submit
+        driver.find_element(By.XPATH, "//button[contains(text(), 'Submit Application')]").click()
 
-        # Step 8: Submit application
-        submit_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Submit Application')]")
-        submit_button.click()
-        print("Submitted application")
-
-        # Step 9: Handle confirmation alert
+        # Step 6: Handle alert (if present)
         try:
             WebDriverWait(driver, 5).until(EC.alert_is_present())
             alert = driver.switch_to.alert
-            print("Submission Alert:", alert.text)
+            print("Alert:", alert.text)
             alert.accept()
         except:
-            print("No alert appeared — assuming inline confirmation")
+            print("No alert appeared")
 
         print("Application Form Submitted Successfully")
 

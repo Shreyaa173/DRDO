@@ -655,7 +655,7 @@ def debug_application_structure(driver, wait):
 
 def test_status_update_comprehensive():
     """Comprehensive status update test"""
-    print("🚀 Starting Comprehensive Admin Status Update Tests\n")
+    print(" Starting Comprehensive Admin Status Update Tests\n")
     
     driver = setup_driver()
     if not driver:
@@ -683,7 +683,7 @@ def test_status_update_comprehensive():
         # Test bulk updates if available
         test_bulk_status_updates(driver, wait)
         
-        print("\n✅ All status update tests completed successfully!")
+        print("\n All status update tests completed successfully!")
         
     except Exception as e:
         print(f"✗ Comprehensive test failed: {e}")
