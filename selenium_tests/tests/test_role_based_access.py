@@ -225,3 +225,15 @@ class TestRoleBasedAccess:
             raise
         finally:
             self.logout()
+
+
+if __name__ == "__main__":
+    test = TestRoleBasedAccess()
+    test.setup_class()
+    try:
+        test.test_student_cannot_access_admin_routes()
+        test.test_admin_cannot_access_student_routes()
+        test.test_unauthenticated_access_redirects_to_login()
+        test.test_role_specific_redirect_after_login()
+    finally:
+        test.teardown_class()

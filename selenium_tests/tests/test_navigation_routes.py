@@ -489,3 +489,10 @@ class TestNavigation:
         if hasattr(cls, 'driver'):
             cls.driver.quit()
             print("🧹 Browser closed successfully")
+
+if __name__ == "__main__":
+    test = TestNavigation()
+    test.setup_class()
+    test.test_admin_navigation_links()
+    test.test_student_navigation_links()
+    test.teardown_class()

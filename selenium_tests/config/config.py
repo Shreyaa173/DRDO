@@ -1,0 +1,5 @@
+base_url = "http://localhost:5173"
+test_user_email = "student@gmail.com"
+test_user_password = "Student@1234"
+admin_email = "admin@gmail.com"
+admin_password = "Admin@1234"
