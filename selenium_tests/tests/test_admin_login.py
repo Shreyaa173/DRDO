@@ -18,14 +18,14 @@ def setup_driver():
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-web-security")
     chrome_options.add_argument("--allow-running-insecure-content")
-    chrome_options.add_experimental_option("detach", True)
+    chrome_options.add_experimental_option("detach", True)  # Optional: keeps browser open after test
 
     try:
         driver = webdriver.Chrome(options=chrome_options)
         driver.maximize_window()
         return driver
     except Exception as e:
-        print(f"Failed to initialize ChromeDriver: {e}")
+        print("[ERROR] Failed to initialize ChromeDriver:", e)
         return None
 
 def login_admin(driver, wait):
@@ -45,16 +45,16 @@ def login_admin(driver, wait):
         submit_button.click()
 
         wait.until(EC.url_contains("/admin"))
-        print("✓ Admin login successful")
+        print("[PASS] Admin login successful")
         return True
 
     except Exception as e:
-        print(f"✗ Admin login failed: {e}")
+        print("[FAIL] Admin login failed:", e)
         return False
 
 def test_admin_login():
     """Run the admin login test"""
-    print("🚀 Testing Admin Login\n")
+    print("[INFO] Starting Admin Login Test...")
     driver = setup_driver()
     if not driver:
         return
@@ -64,15 +64,11 @@ def test_admin_login():
     try:
         result = login_admin(driver, wait)
         if result:
-            print("✅ Admin login test passed")
+            print("[INFO] Admin login test passed")
         else:
-            print("❌ Admin login test failed")
+            print("[INFO] Admin login test failed")
     finally:
-        try:
-            input("Press Enter to close the browser...")
-            driver.quit()
-        except:
-            pass
+        driver.quit()
 
 if __name__ == "__main__":
     test_admin_login()
