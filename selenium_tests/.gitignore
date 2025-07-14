@@ -14,3 +14,7 @@ venv/
 screenshots/
 test-results/
 selenium_tests/tests/test_downloads/
+
+# Bytecode files
+*.pyc
+__pycache__/
