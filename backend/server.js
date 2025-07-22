@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Middleware
 app.use(cors({
-  origin: "https://drdo-6eek.vercel.app/", 
+  origin: "https://drdo-6eek.vercel.app", 
   credentials: true
 }));
 app.use(express.json()); // Add this for JSON parsing

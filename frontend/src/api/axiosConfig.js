@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL, // ✅ use env variable
+  baseURL: process.env.REACT_APP_BACKEND_URL, // ✅ from .env
+  withCredentials: true 
 });
 
 // ✅ Automatically attach token to headers
