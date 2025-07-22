@@ -1,13 +1,21 @@
-import axios from "axios";
+import axios from 'axios';
+
+const baseURL = process.env.NODE_ENV === 'production' 
+  ? 'https://drdo-production.up.railway.app/api'  // Replace with your Railway URL
+  : 'http://localhost:5000/api';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL, // ✅ from .env
-  withCredentials: true 
+  baseURL,
+  withCredentials: true,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
-// ✅ Automatically attach token to headers
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
+// Add request interceptor to include auth token
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('authToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
