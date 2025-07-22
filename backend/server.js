@@ -11,7 +11,10 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://drdo-research.vercel.app/api", 
+  credentials: true
+}));
 app.use(express.json()); // Add this for JSON parsing
 app.use(express.urlencoded({ extended: true })); // Add this for form data
 
