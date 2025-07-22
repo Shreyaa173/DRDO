@@ -14,9 +14,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use(cors({
   origin: [
     "https://drdo-6eek.vercel.app",
-    "https://*.vercel.app",
-    "http://localhost:3000",
-    "http://localhost:5173"
+    "https://*.vercel.app"
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -30,9 +28,11 @@ app.use(express.urlencoded({ extended: true })); // Add this for form data
 // Serve static files for resume downloads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', 'https://drdo-6eek.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.sendStatus(200);
 });
 
 // Routes

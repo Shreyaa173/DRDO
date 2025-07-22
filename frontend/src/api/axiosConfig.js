@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseURL = process.env.NODE_ENV === 'production' 
-  ? 'https://drdo-production.up.railway.app/api'  // Replace with your Railway URL
+  ? 'https://drdo-production.up.railway.app/api'
   : 'http://localhost:5000/api';
 
 const axiosInstance = axios.create({
@@ -13,8 +13,8 @@ const axiosInstance = axios.create({
   }
 });
 
-// Add request interceptor to include auth token
-instance.interceptors.request.use((config) => {
+// Fix: Change 'instance' to 'axiosInstance' 
+axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('authToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
