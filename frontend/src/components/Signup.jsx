@@ -19,15 +19,53 @@ const SignupForm = ({ setCurrentUser }) => {
     setLoading(true);
     setError("");
 
-    try {
-      const signupResponse = await axios.post("/auth/signup", formData);
+    // Basic validation
+    if (!formData.name.trim()) {
+      setError("Name is required");
+      setLoading(false);
+      return;
+    }
 
+    if (!formData.email.trim()) {
+      setError("Email is required");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      console.log("🔍 Attempting signup with:", { 
+        name: formData.name, 
+        email: formData.email, 
+        role: formData.role 
+      });
+
+      const signupData = {
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+        role: formData.role
+      };
+
+      const signupResponse = await axios.post("/auth/signup", signupData);
+      console.log("✅ Signup successful:", signupResponse.data);
+
+      // Auto-login after successful signup
       const loginResponse = await axios.post("/auth/login", {
-        email: formData.email,
+        email: signupData.email,
         password: formData.password,
       });
 
       const { token, user } = loginResponse.data;
+
+      if (!token || !user) {
+        throw new Error("Invalid response from server");
+      }
 
       localStorage.setItem("authToken", token);
       localStorage.setItem("currentUser", JSON.stringify(user));
@@ -36,13 +74,13 @@ const SignupForm = ({ setCurrentUser }) => {
       setCurrentUser(user);
       navigate(user.role === "admin" ? "/admin" : "/overview");
     } catch (err) {
+      console.error("Signup error:", err?.response?.data || err.message);
       const errorMessage =
         err.response?.data?.error ||
         err.response?.data?.message ||
         err.message ||
         "Signup failed. Please try again.";
       setError(errorMessage);
-      alert(errorMessage);
     } finally {
       setLoading(false);
     }

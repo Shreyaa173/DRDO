@@ -12,10 +12,16 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Middleware
 app.use(cors({
-  origin: "https://drdo-research.vercel.app/api", 
-  credentials: true
-}    
-));
+  origin: [
+    "http://localhost:5173", // Local development
+    "http://localhost:3000", // Alternative local port
+    "https://drdo-research.vercel.app", // Production frontend (not /api)
+    "https://drdo-research-git-main-username.vercel.app" // Vercel preview deployments
+  ], 
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json()); // Add this for JSON parsing
 app.use(express.urlencoded({ extended: true })); // Add this for form data

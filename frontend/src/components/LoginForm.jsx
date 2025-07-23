@@ -6,36 +6,56 @@ const LoginForm = ({ setCurrentUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-  try {
-    const res = await axios.post("/auth/login", { email, password });
-    const { token, user } = res.data;
+    try {
+      console.log("🔍 Attempting login with:", { email });
+      
+      const res = await axios.post("/auth/login", { 
+        email: email.trim().toLowerCase(), 
+        password 
+      });
+      
+      const { token, user } = res.data;
 
-    console.log("✅ Login response:", res.data);
+      console.log("✅ Login response:", res.data);
 
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      if (!token || !user) {
+        throw new Error("Invalid response from server");
+      }
 
-    // ✅ Navigate only if login works
-    if (user?.role) {
-      const path = user.role === "admin" ? "/admin" : "/student";
-      console.log("Navigating to:", path);
-      setCurrentUser(user);
-      navigate(path);
-    } else {
-      alert("User role not found");
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      // ✅ Navigate only if login works
+      if (user?.role) {
+        const path = user.role === "admin" ? "/admin" : "/student";
+        console.log("Navigating to:", path);
+        setCurrentUser(user);
+        navigate(path);
+      } else {
+        throw new Error("User role not found");
+      }
+
+    } catch (err) {
+      console.error("Login failed:", err?.response?.data || err.message);
+      const errorMessage = err?.response?.data?.error || 
+                          err?.response?.data?.message || 
+                          err.message || 
+                          "Login failed. Please check your credentials.";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
-
-  } catch (err) {
-    console.error("Login failed:", err?.response?.data || err.message);
-    alert("Login failed. Please check credentials.");
-  }
-};
+  };
 
 
   const togglePasswordVisibility = () => {
@@ -121,12 +141,20 @@ const LoginForm = ({ setCurrentUser }) => {
           </div>
         </div>
 
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong className="font-bold">Error!</strong>
+            <span className="block sm:inline"> {error}</span>
+          </div>
+        )}
+
         <button
           type="submit"
           data-testid="login-button"
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          disabled={loading}
         >
-          Login
+          {loading ? "Logging In..." : "Login"}
         </button>
 
         <p className="mt-4 text-sm text-gray-600 text-center">

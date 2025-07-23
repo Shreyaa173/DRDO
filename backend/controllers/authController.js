@@ -9,20 +9,38 @@ exports.register = async (req, res) => {
   
   const { name, email, password, role } = req.body;
   
+  // Input validation
+  if (!name || !email || !password) {
+    console.log('❌ Missing required fields');
+    return res.status(400).json({ error: "Name, email, and password are required" });
+  }
+
+  if (password.length < 6) {
+    console.log('❌ Password too short');
+    return res.status(400).json({ error: "Password must be at least 6 characters long" });
+  }
+
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    console.log('❌ Invalid email format');
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+  
   try {
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       console.log('❌ User already exists:', email);
       return res.status(400).json({ error: "Email already exists" });
     }
     
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12); // Increased from 10 to 12 for better security
     console.log('🔍 Password hashed successfully');
 
     const user = await User.create({
-      name,
-      email,
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
       password: hashedPassword,
       role: role || 'student' // Default to student if no role provided
     });
@@ -40,7 +58,11 @@ exports.register = async (req, res) => {
 
   } catch (err) {
     console.error("❌ Register Error:", err);
-    res.status(400).json({ error: "Registration failed" });
+    if (err.code === 11000) {
+      // MongoDB duplicate key error
+      return res.status(400).json({ error: "Email already exists" });
+    }
+    res.status(500).json({ error: "Registration failed. Please try again." });
   }
 };
 
@@ -59,34 +81,33 @@ exports.login = async (req, res) => {
   }
 
   try {
-    console.log('🔍 Searching for user:', email);
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    console.log('🔍 Searching for user:', normalizedEmail);
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
-      console.log('❌ User not found:', email);
+      console.log('❌ User not found:', normalizedEmail);
       
       // Debug: Check how many users exist
       const userCount = await User.countDocuments();
       console.log('📊 Total users in database:', userCount);
       
-      // Debug: List all users (emails only)
-      const allUsers = await User.find({}).select('email');
-      console.log('📋 All users in database:', allUsers.map(u => u.email));
+      // Debug: List all users (emails only) - limit to 10 for security
+      const allUsers = await User.find({}).select('email').limit(10);
+      console.log('📋 Sample users in database:', allUsers.map(u => u.email));
       
-      return res.status(400).json({ error: "User not found" });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
     console.log('✅ User found:', user.email);
     console.log('🔍 User ID:', user._id);
-    console.log('🔍 Stored password hash:', user.password.substring(0, 20) + '...');
-    console.log('🔍 Provided password:', password);
 
     const isMatch = await bcrypt.compare(password, user.password);
     console.log('🔍 Password match result:', isMatch);
     
     if (!isMatch) {
-      console.log('❌ Password mismatch');
-      return res.status(400).json({ error: "Invalid credentials" });
+      console.log('❌ Password mismatch for user:', user.email);
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
     // Check JWT_SECRET
@@ -101,7 +122,7 @@ exports.login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    console.log('✅ Login successful for:', email);
+    console.log('✅ Login successful for:', user.email);
 
     // Create a clean user object (exclude password)
     const userData = {
@@ -123,7 +144,7 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.error("❌ Login Error:", err);
     if (!res.headersSent) {
-      res.status(500).json({ error: "Server error" });
+      res.status(500).json({ error: "Server error. Please try again." });
     }
   }
 };
