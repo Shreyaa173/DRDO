@@ -454,7 +454,7 @@ const StudentDashboardOverview = ({ applications, currentUser }) => {
   );
 };
 
-const baseURL = "http://localhost:5000/api"; 
+const baseURL = "https://drdo-internshipapplicationproejct.onrender.com/api"; 
 
 const MyApplications = ({ applications, onDeleteApplication }) => {
   const [searchTerm, setSearchTerm] = useState("");
