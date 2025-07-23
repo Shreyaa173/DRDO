@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://your-netlify-site-name.netlify.app"
+    "https://drdointernshipapplicationproject.netlify.app/"
   ],
   credentials: true
 }));
