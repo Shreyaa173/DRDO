@@ -18,14 +18,14 @@ router.post('/', upload.single('resume'), authMiddleware, createApplication);
 
 // Admin Routes
 router.get('/', authMiddleware, getAllApplications);
+
+// ⚠️ IMPORTANT: Put specific routes BEFORE parameterized routes
+router.get('/student/mine', authMiddleware, getStudentApplications);
+router.get('/resume/:filename', getResume);
+
+// Parameterized routes come AFTER specific routes
 router.get('/:id', authMiddleware, getApplication);
 router.put('/:id/status', authMiddleware, updateStatus);
-
-// Student Routes
-router.get('/student/mine', authMiddleware, getStudentApplications);
 router.delete('/:id', authMiddleware, deleteApplication);
-
-// ✅ Serve uploaded resume
-router.get('/resume/:filename', getResume);
 
 module.exports = router;

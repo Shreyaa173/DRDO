@@ -1,25 +1,15 @@
-import axios from 'axios';
-
-const baseURL = process.env.NODE_ENV === 'production' 
-  ? 'https://drdo-production.up.railway.app/api'
-  : 'http://localhost:5000/api';
+import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL,
-  withCredentials: true,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+    baseURL: process.env.REACT_APP_BACKEND_URL, // ✅ from .env
+  withCredentials: true 
 });
 
-// Fix: Change 'instance' to 'axiosInstance' 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem("authToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-export default axiosInstance;
