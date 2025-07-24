@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # === Configuration ===
-BASE_URL = "http://localhost:5173"
+BASE_URL = "https://drdointernshipapplicationproject.netlify.app"
 ADMIN_EMAIL = "admin@gmail.com"
 ADMIN_PASSWORD = "Admin@1234"
 

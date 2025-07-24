@@ -20,8 +20,8 @@ mongoose.connect(process.env.MONGO_URI)
 // Middleware
 app.use(cors({
   origin: [
-    "http://localhost:5173", // local
-    "https://drdointernshipapplicationproject.netlify.app" // update this
+    "http://localhost:5173", 
+    "https://drdointernshipapplicationproject.netlify.app" 
   ],
   credentials: true
 }));

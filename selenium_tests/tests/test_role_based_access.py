@@ -43,7 +43,7 @@ class TestRoleBasedAccess:
         cls.admin_password = "Admin@1234"
         cls.student_username = "student@gmail.com"
         cls.student_password = "Student@1234"
-        cls.base_url = "http://localhost:5173"
+        cls.base_url = "https://drdointernshipapplicationproject.netlify.app"
 
     @classmethod
     def teardown_class(cls):

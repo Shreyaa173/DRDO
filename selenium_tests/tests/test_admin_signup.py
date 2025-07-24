@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import random
 
-BASE_URL = "http://localhost:5173"
+BASE_URL = "https://drdointernshipapplicationproject.netlify.app"
 
 def generate_unique_email():
     return f"admin{random.randint(1000, 9999)}@test.com"
