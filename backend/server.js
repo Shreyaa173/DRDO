@@ -4,6 +4,13 @@ const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
 const app = express();
+const fs = require('fs');
+
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+  console.log('📁 uploads folder created automatically');
+}
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -12,7 +19,10 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Middleware
 app.use(cors({
-  origin: "https://drdo-research.vercel.app/api", 
+  origin: [
+    "http://localhost:5173", 
+    "https://drdointernshipapplicationproject.netlify.app" 
+  ],
   credentials: true
 }    
 ));

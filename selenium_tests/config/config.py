@@ -1,4 +1,4 @@
-base_url = "http://localhost:5173"
+base_url = "https://drdointernshipapplicationproject.netlify.app"
 test_user_email = "student@gmail.com"
 test_user_password = "Student@1234"
 admin_email = "admin@gmail.com"

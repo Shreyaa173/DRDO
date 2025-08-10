@@ -10,7 +10,7 @@ import time
 import os
 
 # === Configuration ===
-BASE_URL = "http://localhost:5173"
+BASE_URL = "https://drdointernshipapplicationproject.netlify.app"
 ADMIN_EMAIL = "admin@gmail.com"
 ADMIN_PASSWORD = "Admin@1234"
 

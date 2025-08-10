@@ -7,9 +7,9 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.alert import Alert
 import os
 
-BASE_URL = "http://localhost:5173"
-TEST_EMAIL = "anshikafb1506@gmail.com"
-TEST_PASSWORD = "12345"
+BASE_URL = "https://drdointernshipapplicationproject.netlify.app"
+TEST_EMAIL = "student@gmail.com"
+TEST_PASSWORD = "Student@1234"
 
 def test_student_login():
     # Resolve path to chromedriver relative to this file

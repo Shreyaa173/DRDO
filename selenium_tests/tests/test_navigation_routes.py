@@ -30,7 +30,7 @@ class TestNavigation:
         cls.admin_password = "Admin@1234"
         cls.student_username = "student@gmail.com"
         cls.student_password = "Student@1234"
-        cls.base_url = "http://localhost:5173"
+        cls.base_url = "https://drdointernshipapplicationproject.netlify.app"
 
     def clear_session(self):
         """Comprehensive session clearing"""
@@ -62,7 +62,7 @@ class TestNavigation:
         
         try:
             # Navigate to login page
-            self.driver.get("http://localhost:5173/login")
+            self.driver.get("https://drdointernshipapplicationproject.netlify.app/login")
             time.sleep(2)
             
             # Wait for page to load

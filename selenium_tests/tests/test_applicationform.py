@@ -7,9 +7,9 @@ import time
 import os
 
 # === Configuration ===
-BASE_URL = "http://localhost:5173"
-TEST_EMAIL = "anshikafb1506@gmail.com"
-TEST_PASSWORD = "12345"
+BASE_URL = "https://drdointernshipapplicationproject.netlify.app"
+TEST_EMAIL = "student@gmail.com"
+TEST_PASSWORD = "Student@1234"
 
 # Dynamically resolve paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # one level above /tests

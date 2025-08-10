@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 
 # Configuration
-BASE_URL = "http://localhost:5173"  # Frontend base URL
+BASE_URL = "https://drdointernshipapplicationproject.netlify.app"  # Frontend base URL
 ADMIN_USERNAME = "admin@gmail.com"
 ADMIN_PASSWORD = "Admin@1234"
 DOWNLOAD_DIR = os.path.join(os.getcwd(), "test_downloads")
