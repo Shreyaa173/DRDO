@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from './api/axiosConfig'; 
+import axiosInstance from "./api/axiosConfig";
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { 

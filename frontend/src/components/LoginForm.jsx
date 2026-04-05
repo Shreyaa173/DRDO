@@ -9,34 +9,32 @@ const LoginForm = ({ setCurrentUser }) => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await axios.post("/auth/login", { email, password });
-    const { token, user } = res.data;
+    try {
+      const res = await axios.post("/auth/login", { email, password });
+      const { token, user } = res.data;
 
-    console.log("✅ Login response:", res.data);
+      console.log("✅ Login response:", res.data);
 
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    // ✅ Navigate only if login works
-    if (user?.role) {
-      const path = user.role === "admin" ? "/admin" : "/student";
-      console.log("Navigating to:", path);
-      setCurrentUser(user);
-      navigate(path);
-    } else {
-      alert("User role not found");
+      // ✅ Navigate only if login works
+      if (user?.role) {
+        const path = user.role === "admin" ? "/admin" : "/student";
+        console.log("Navigating to:", path);
+        setCurrentUser(user);
+        navigate(path);
+      } else {
+        alert("User role not found");
+      }
+    } catch (err) {
+      console.error("Login failed:", err?.response?.data || err.message);
+      alert("Login failed. Please check credentials.");
     }
-
-  } catch (err) {
-    console.error("Login failed:", err?.response?.data || err.message);
-    alert("Login failed. Please check credentials.");
-  }
-};
-
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -53,7 +51,7 @@ const LoginForm = ({ setCurrentUser }) => {
         <div className="mb-4">
           <label className="block text-gray-600 mb-1">Email</label>
           <input
-            name="email" 
+            name="email"
             data-testid="login-email"
             type="email"
             value={email}
@@ -128,6 +126,12 @@ const LoginForm = ({ setCurrentUser }) => {
         >
           Login
         </button>
+
+        <p className="mt-2 text-sm text-center">
+          <a href="/forgot-password" className="text-blue-500 hover:underline">
+            Forgot Password?
+          </a>
+        </p>
 
         <p className="mt-4 text-sm text-gray-600 text-center">
           Don't have an account?{" "}
